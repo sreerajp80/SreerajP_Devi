@@ -1,0 +1,12 @@
+{
+  "appName": "Devi (Navadurga)",
+  "description": "An interactive devotional experience dedicated to the Nine Forms of Durga.",
+  "version": "1.2.2",
+  "build": "5",
+  "details": {
+    "Author": "Sreeraj P",
+    "License": "All libraries used are open source.",
+    "AI used": "Antigravity (Google DeepMind), Anthropic Claude",
+    "IDE used": "Antigravity IDE, Visual Studio Code"
+  }
+}

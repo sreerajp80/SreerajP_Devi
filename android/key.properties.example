@@ -1,0 +1,19 @@
+# Release signing credentials template.
+#
+# Copy this file to android/key.properties and fill in the real values.
+# android/key.properties is gitignored and MUST NOT be committed.
+#
+# storeFile is resolved relative to the android/ directory, so place the .jks
+# file directly in android/ and give just its filename here.
+#
+# To create a keystore (run once, from the project root):
+#   keytool -genkey -v -keystore <keystore_Path> \
+#     -alias <alias_name> -keyalg RSA -keysize 2048 -validity 10000
+#
+# Back up the .jks file and these passwords securely in at least two places.
+# Losing the keystore permanently prevents publishing updates to Google Play.
+
+storeFile=
+storePassword=CHANGE_ME
+keyAlias=
+keyPassword=CHANGE_ME
