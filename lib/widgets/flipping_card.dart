@@ -72,8 +72,6 @@ class FlippingCardState extends ConsumerState<FlippingCard>
 
     if (_isFlipped) {
       _controller.forward();
-      // Start playing mantra audio when card is flipped to details
-      ref.read(audioServiceProvider).playMantra(widget.durga.audioPath);
     } else {
       _controller.reverse();
       // Stop playing mantra audio when card is flipped back to front
@@ -366,7 +364,7 @@ class _BackCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
 
-          // Description Section
+          // Description & Details Section
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(right: 4),
@@ -377,14 +375,25 @@ class _BackCard extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8.0),
-                    child: Text(
-                      durga.descriptionMalayalam,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontSize: 13,
-                        color: AppColors.textDark,
-                        fontFamily: 'Manjari',
-                        height: 1.4,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          durga.descriptionMalayalam,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontSize: 13,
+                            color: AppColors.textDark,
+                            fontFamily: 'Manjari',
+                            height: 1.4,
+                          ),
+                        ),
+                        if (durga.additionalSections.isNotEmpty) ...[
+                          const SizedBox(height: 16),
+                          ...durga.additionalSections.map(
+                            (section) => _buildAdditionalSection(context, section),
+                          ),
+                        ],
+                      ],
                     ),
                   ),
                 ),
@@ -395,6 +404,109 @@ class _BackCard extends StatelessWidget {
 
           // Audio Player Controls (directly bound to this card's audio path)
           AudioPlayerBar(audioPath: durga.audioPath),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAdditionalSection(BuildContext context, AdditionalSection section) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.haridraBackground.withValues(alpha: 0.4),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: AppColors.swarnaGold.withValues(alpha: 0.3),
+          width: 1.0,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Section Title with Gold Lotus Icon
+          Row(
+            children: [
+              const Icon(
+                Icons.spa,
+                size: 16,
+                color: AppColors.swarnaGold,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  section.title,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.raktaRed,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: AppColors.swarnaGold.withValues(alpha: 0.2),
+            height: 16,
+            thickness: 0.8,
+          ),
+          // Subtitle / Intro
+          if (section.subtitle != null) ...[
+            Text(
+              section.subtitle!,
+              style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textDark,
+                height: 1.3,
+              ),
+            ),
+            const SizedBox(height: 6),
+          ],
+          // Bullets
+          if (section.bullets.isNotEmpty)
+            ...section.bullets.map(
+              (bullet) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 4.0, right: 6.0),
+                      child: Icon(
+                        Icons.fiber_manual_record,
+                        size: 5,
+                        color: AppColors.swarnaGold,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        bullet,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: AppColors.textDark,
+                          height: 1.3,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          // Footer
+          if (section.footer != null) ...[
+            const SizedBox(height: 6),
+            Text(
+              section.footer!,
+              style: TextStyle(
+                fontSize: 11,
+                fontStyle: FontStyle.italic,
+                color: AppColors.textDark.withValues(alpha: 0.8),
+                height: 1.3,
+              ),
+            ),
+          ],
         ],
       ),
     );

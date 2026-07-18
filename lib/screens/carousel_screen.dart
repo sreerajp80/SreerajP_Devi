@@ -7,6 +7,7 @@ import '../models/durga_model.dart';
 import '../widgets/flipping_card.dart';
 import '../widgets/pushpanjali_offering.dart';
 import 'about_screen.dart';
+import 'more_details_screen.dart';
 
 /// The main horizontal carousel screen displaying the Nine Forms of Durga (Navadurga).
 /// Coordinates horizontal swiping, the Pushpanjali offering animation, and audio playback.
@@ -157,13 +158,48 @@ class _CarouselScreenState extends ConsumerState<CarouselScreen>
       appBar: AppBar(
         title: const Text('നവദുർഗ്ഗ'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outline, color: AppColors.raktaRed),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const AboutScreen()),
-              );
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert, color: AppColors.raktaRed),
+            color: AppColors.cardBackground,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: const BorderSide(color: AppColors.swarnaGold, width: 1),
+            ),
+            onSelected: (value) {
+              if (value == 'about') {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const AboutScreen()),
+                );
+              } else if (value == 'details') {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const MoreDetailsScreen()),
+                );
+              }
             },
+            itemBuilder: (BuildContext context) => [
+              const PopupMenuItem<String>(
+                value: 'details',
+                child: Text(
+                  'കൂടുതൽ വിവരങ്ങൾ',
+                  style: TextStyle(
+                    fontFamily: 'Manjari',
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.raktaRed,
+                  ),
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'about',
+                child: Text(
+                  'ആപ്പിനെക്കുറിച്ച്',
+                  style: TextStyle(
+                    fontFamily: 'Manjari',
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.raktaRed,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
